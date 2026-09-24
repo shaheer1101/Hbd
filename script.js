@@ -106,7 +106,7 @@ const questions = [
   { question: "What comes after A?", options: ["E", "B", "D", "C"], correct: 1 },
   { question: "What comes after C?", options: ["G", "F", "D", "E"], correct: 2 },
   { question: "Put your last three answers together. What do they spell?", options: ["KMW", "HBD", "JOV", "LNZ"], correct: 1 },
-  { question: "What does ILY mean?", options: ["HAPPY BIRTH DAY", "HAPPY JANAM DIN", "HAPPY SALGIRAH DAY", "HAPPY CELEBRATION DAY"], correct: 0 }
+  { question: "What does HBD mean?", options: ["HAPPY BIRTH DAY", "HAPPY JANAM DIN", "HAPPY SALGIRAH DAY", "HAPPY CELEBRATION DAY"], correct: 0 }
 ];
 let currentQ = 0;
 
