@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>A Special Birthday Surprise</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&family=Dancing+Script:wght@600&family=Fredoka+One&family=Nunito:wght@600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Canvas Confetti Library -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <!-- CSS Link -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <canvas id="confettiCanvas"></canvas>
+  <div class="bg-overlay"></div>
+
+  <!-- Floating Balloons Background Layer -->
+  <div class="balloon-container" id="balloonContainer"></div>
+
+  <!-- =========================================================
+       SCREEN 1: LOCK SCREEN (Starting Screen)
+  ========================================================= -->
+  <div id="screenLock" class="screen active">
+    <div class="card-box" id="lockCard">
+      <div class="lock-icon-container">
+        <div class="heart-lock"></div>
+        <div class="badge-lock">🎁</div>
+      </div>
+      <h2 class="lock-title">Unlock Your Surprise</h2>
+      <p class="subtitle-lock">Enter the secret code to begin</p>
+      
+      <!-- Naya Code: Normal Hint -->
+      <p class="hint-text">Hint: Time when we met</p>
+
+      <div class="slots-container" id="slots">
+        <div class="slot">🎂</div><div class="slot">🎂</div><div class="slot">🎂</div><div class="slot">🎂</div>
+      </div>
+
+      <div class="keypad">
+        <button class="key" data-value="1">1</button><button class="key" data-value="2">2</button><button class="key" data-value="3">3</button>
+        <button class="key" data-value="4">4</button><button class="key" data-value="5">5</button><button class="key" data-value="6">6</button>
+        <button class="key" data-value="7">7</button><button class="key" data-value="8">8</button><button class="key" data-value="9">9</button>
+        <div style="width: 60px; height: 60px;"></div>
+        <button class="key" data-value="0">0</button>
+        <button class="key key-back" id="backspaceBtn">⌫</button>
+      </div>
+
+      <!-- Naya Code: 3 Wrong Attempts Hint (Initially Hidden) -->
+      <p id="wrongHint" class="wrong-hint" style="display: none;">Hint: 1100</p>
+    </div>
+  </div>
+
+  <!-- =========================================================
+       SCREEN 2: BIRTHDAY SURPRISE REVEAL
+  ========================================================= -->
+  <div id="screenReveal" class="screen">
+    <div class="card-box">
+      <div id="initialView">
+        <div class="gift-box-wrapper"><span class="gift-icon">🎁</span></div>
+        <h2 class="lock-title" style="color:#333;">Something special<br>is waiting...</h2>
+        <p class="subtitle-lock">Tap the button to open it ✨</p>
+        <button class="btn-main" id="openBtn">Open It!</button>
+      </div>
+
+      <div id="revealedView" style="display: none;">
+        <div class="avatar-wrapper">🎂</div>
+        <h2 class="title-birthday">Happy Birthday,</h2>
+        <div class="name-tag" id="displayNameTag">Noor 🎁🎉</div>
+        <p class="subtitle-lock">Happy Birthday! 🎂 May this next year bring you great success, good health, and everything you’ve been hoping for. Enjoy your special day! 🥳 </p>
+        <button class="btn-secondary" onclick="navigateTo('screenPhotos')">Let's explore &rrarr;</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================
+       SCREEN 3: PHOTO MEMORIES
+  ========================================================= -->
+  <div id="screenPhotos" class="screen">
+    <h1 class="title-photo">Happy Birthday!</h1>
+    <p class="subtitle-photo">Many Many Happy Returns of the Day</p>
+
+    <div class="card-wrapper" id="cardWrapper">
+      <div class="card-photo">
+        <img src="https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&w=600&q=80">
+        <div class="caption">Make a Wish! 🎈</div>
+      </div>
+      <div class="card-photo">
+        <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=600&q=80">
+        <div class="caption">Sweetest Moments 💖</div>
+      </div>
+      <div class="card-photo">
+        <img src="https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?auto=format&fit=crop&w=600&q=80">
+        <div class="caption">Happy Birthday 🎂</div>
+      </div>
+    </div>
+
+    <button class="btn-letter-trigger" onclick="navigateTo('screenLetter')">Read Birthday Letter &rrarr;</button>
+  </div>
+
+  <!-- =========================================================
+       SCREEN 4: BIRTHDAY LETTER
+  ========================================================= -->
+  <div id="screenLetter" class="screen">
+    <div class="mail-card" id="mailCard">
+      <div class="gift-box-wrapper"><span class="gift-icon">✉️</span></div>
+      <h2 style="font-size:20px; margin-bottom:8px;">You've Got Mail! 🎀</h2>
+      <p class="subtitle-lock">Tap to open your special letter</p>
+      <button class="heart-btn" onclick="openLetter()">❤️</button>
+    </div>
+
+    <div class="letter-card" id="letterCard">
+      <div class="page active" id="page1">
+        <h3 style="font-family:'Caveat', cursive; font-size:26px; color:#333; margin-bottom:12px;">Happy Birthday, <span class="letterName">Noor</span> 🎂</h3>
+        <p style="font-size:13px; color:#666; line-height:1.6; margin-bottom:12px;">Wishing you a day filled with laughter, great memories, and lots of cake. May this new chapter bring you exciting opportunities! 🚀</p>
+        <p style="font-size:13px; color:#666; line-height:1.6; margin-bottom:12px;">You bring so much happiness, warmth, and positivity just by being yourself.</p>
+        <div style="text-align:right;"><button class="btn-pink" onclick="nextLetterPage()">Read More &rrarr;</button></div>
+      </div>
+
+      <div class="page" id="page2">
+        <p style="font-size:13px; color:#666; line-height:1.6; margin-bottom:12px;">I hope your day is filled with love, laughter, happiness, and everything that makes you smile.</p>
+        <p style="font-size:13px; color:#666; line-height:1.6; margin-bottom:12px;"> 🎉</p>
+        <div style="background:#fff0f5; border:1px dashed #ffccd5; border-radius:15px; padding:15px; text-align:center; margin:15px 0;">
+          <h4 style="font-family:'Caveat', cursive; font-size:24px; color:#d6336c;">HAPPY BIRTHDAY, <span class="letterName">Noor</span>.</h4>
+        </div>
+        <div style="display:flex; justify-content:space-between;">
+          <button class="btn-outline" onclick="prevLetterPage()">&lt; Back</button>
+          <button class="btn-pink" onclick="navigateTo('screenQuiz')">Play Quiz &rrarr;</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================
+       SCREEN 5: BIRTHDAY QUIZ
+  ========================================================= -->
+  <div id="screenQuiz" class="screen">
+    <div class="hearts-bar">
+      <span class="heart">♥</span><span class="heart">♥</span><span class="heart">♥</span><span class="heart">♥</span><span class="heart">♥</span>
+    </div>
+
+    <div class="quiz-card" id="quizCard">
+      <div class="question-box" id="questionBox">What comes after G?</div>
+      <div class="options-container" id="optionsContainer"></div>
+      <div class="subtitle-lock" id="questionFooter">Question 1 of 5</div>
+    </div>
+
+    <div class="result-card" id="resultCard" style="display:none;">
+      <h2 style="font-size:20px; margin-bottom:10px;">Quiz Complete :)</h2>
+      <button class="btn-pink" onclick="showFinalWish()">One Last Thing 🌸</button>
+    </div>
+
+    <div class="final-wish-card" id="finalWishCard" style="display:none;">
+      <img class="avatar-final" src="https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?auto=compress&cs=tinysrgb&w=300">
+      <h2 class="title-birthday" style="font-size:28px;">Happy Birthday, <span class="letterName">Noor</span> 🎂🎉</h2>
+      <p class="subtitle-lock" style="margin-top:10px;">I hope this surprise brought a smile to your face! 💕</p>
+    </div>
+  </div>
+
+  <!-- JS Link -->
+  <script src="script.js"></script>
+</body>
+</html>
